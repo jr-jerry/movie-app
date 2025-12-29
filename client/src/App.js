@@ -1,14 +1,19 @@
 import './App.css';
-import NavBar from './component/Navbar';
-
+import {Routes,Route} from 'react-router-dom'
+import Home from './pages/home';
+import { Provider } from 'react-redux';
+import {store} from './store/store'
 
 
 function App() {
   return (
     <>
-
-       <h1>Movie App</h1>
-       <NavBar/>
+      <Provider store={store}>
+      <Routes>
+        
+        <Route path='/' element={<Home/>}/>
+      </Routes>
+      </Provider>
     </>
    
   );
