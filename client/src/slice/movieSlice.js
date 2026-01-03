@@ -4,13 +4,18 @@ import { fetchMovie } from "../api/movies";
 let initialState={
     data:null,
     isError:false,
-    isLoading:false
+    isLoading:false,
+    searchData:""
 }
-
 
 const movieSlice=createSlice({
     name:'movie',
     initialState,
+    reducers:{
+        setSearch:(state,action)=>{
+            state.searchData=action.payload
+        }
+    },
     extraReducers:(builder)=>{
         builder.addCase(fetchMovie.pending,(state,action)=>{
             state.isLoading=true;
@@ -28,3 +33,4 @@ const movieSlice=createSlice({
     }
 })
 export default movieSlice.reducer;
+export const {setSearch}=movieSlice.actions;

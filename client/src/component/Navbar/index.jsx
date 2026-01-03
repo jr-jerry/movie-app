@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
+import { setSearch } from '../../slice/movieSlice';
+import {useSelector,useDispatch} from 'react-redux'
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -62,6 +64,12 @@ const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
 const isMenuOpen = Boolean(anchorEl);
 const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+const {searchData}=useSelector(state=>state.movie);
+const dispatch=useDispatch();
+const handleSearch=(e)=>{
+    dispatch(setSearch(e.target.value));
+    console.log(searchData);
+}
 
 const handleProfileMenuOpen = (event) => {
 setAnchorEl(event.currentTarget);
@@ -175,7 +183,7 @@ return (
         >
         Movie App
         </Typography>
-        <Search>
+        <Search onChange={handleSearch}>
         <SearchIconWrapper>
             <SearchIcon />
         </SearchIconWrapper>
