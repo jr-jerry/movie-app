@@ -10,9 +10,9 @@ const Home=()=>{
     const movieData=useSelector(state=>state.movie.data);
     const dispatch=useDispatch();
 
-    const searchData=useSelector(state=>state.movie.searchData);
+    // const searchData=useSelector(state=>state.movie.searchData);
 
-    const filteredByName=getMoviesByName(movieData,searchData);
+    const filteredByName=movieData?.titles;
 
     useEffect(()=>{
         dispatch(fetchMovie());

@@ -13,10 +13,12 @@ import {useSelector,useDispatch} from 'react-redux'
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { fetchMovie } from '../../api/movies';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { fetchMovieByName } from '../../api/movies';
 
 const Search = styled('div')(({ theme }) => ({
 position: 'relative',
@@ -61,14 +63,38 @@ width: '100%',
 export default function NavBar() {
 const [anchorEl, setAnchorEl] = React.useState(null);
 const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+const [searchValue,setSearchValue]=React.useState('');
 
 const isMenuOpen = Boolean(anchorEl);
 const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
 const {searchData}=useSelector(state=>state.movie);
 const dispatch=useDispatch();
+
+
+// const handleSearch=(e)=>{
+//     if(e.target.value.trim().length==0){
+//         dispatch(fetchMovie())
+//     }else{
+//         dispatch(fetchMovieByName(e.target.value));
+//     }
+    
+//     console.log(searchData);
+// }
+React.useEffect(()=>{
+    const timer=setTimeout(()=>{
+        if(searchValue.trim().length===0){
+            dispatch(fetchMovie());
+        }else{
+            dispatch(fetchMovieByName(searchValue))
+        }
+
+    },500)
+    return ()=>clearTimeout(timer);
+},[searchValue])
+
 const handleSearch=(e)=>{
-    dispatch(setSearch(e.target.value));
-    console.log(searchData);
+    setSearchValue(e.target.value);
 }
 
 const handleProfileMenuOpen = (event) => {

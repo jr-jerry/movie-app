@@ -9,15 +9,17 @@ import Box from '@mui/material/Box';
 
 
 export default function MovieCard({movie}) {
+    const loadingFailedImg='https://cdn.dribbble.com/users/936407/screenshots/2536049/media/19cb5387ba36fd565f570e07c2caffc5.gif?resize=400x0'
     const {primaryTitle,primaryImage,rating,type,plot,genres}=movie;
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 ,height:'100%' }}>
       <CardMedia
         sx={{ height: 180 ,
-            objectFit:'cover'
+            objectFit:'cover',
+            backgroundColor:'#f5f5f5'
         }}
-        image={primaryImage.url}
+        image={primaryImage?.url || loadingFailedImg}
         title="movie image title"
 
       />
@@ -25,13 +27,13 @@ export default function MovieCard({movie}) {
         <Typography gutterBottom variant="h6" component="div">
           {primaryTitle}
         </Typography>
-        <Box sx={{display:'flex' ,flexWrap:'Wrap' ,gap:0.5, mb:1}}>
+        {/* <Box sx={{display:'flex' ,flexWrap:'Wrap' ,gap:0.5, mb:1}}>
           {genres.map((genre,index)=>(
             <Chip
             key={index} label={genre} size="small" variant="outlined"
             />
           ))}
-        </Box>
+        </Box> */}
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {plot}
         </Typography>
