@@ -1,11 +1,12 @@
 import {  createSlice } from "@reduxjs/toolkit";
-import { fetchMovie, fetchMovieByName } from "../api/movies";
+import { fetchGenres, fetchMovie, fetchMovieByName } from "../api/movies";
 
 let initialState={
     data:null,
     isError:false,
     isLoading:false,
-    searchData:""
+    searchData:"",
+    genres:[]
 }
 
 const movieSlice=createSlice({
@@ -43,6 +44,20 @@ const movieSlice=createSlice({
         builder.addCase(fetchMovieByName.fulfilled,(state,action)=>{
             state.data=action.payload;
             state.isLoading=false;
+        })
+        // <--------------------------------------FetchGenres---------------------------->
+        builder.addCase(fetchGenres.pending,(state,action)=>{
+            state.isLoading=true;
+        })
+        builder.addCase(fetchGenres.rejected,(state,action)=>{
+            state.isError=true;
+            state.isLoading=false;
+            console.log('error',action.payload);
+        })
+        builder.addCase(fetchGenres.fulfilled,(state,action)=>{
+            state.isError=false;
+            state.isLoading=false;
+            state.genres=action.payload;
         })
     }
 })

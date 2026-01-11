@@ -36,3 +36,18 @@ export const fetchMovieByName=
         }
     
     )
+
+export const fetchGenres=createAsyncThunk(
+    'movie/fetchGenres',
+    async(query,thunkAPI)=>{
+        const fetchGenresURL=BASEURL+'/interests';
+        try{
+            const response=await axios.get(fetchGenresURL);
+            const {data}=response;
+            return data;
+        }catch(error){
+            console.log(error);
+            return thunkAPI.rejectWithValue(error.response?.data);
+        }
+    }
+)

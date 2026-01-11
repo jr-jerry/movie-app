@@ -3,22 +3,17 @@ import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
+import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { setSearch } from '../../slice/movieSlice';
 import {useSelector,useDispatch} from 'react-redux'
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { fetchMovie } from '../../api/movies';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
+import { fetchGenres, fetchMovie } from '../../api/movies';
 import { fetchMovieByName } from '../../api/movies';
+import { useEffect } from 'react';
+import GenreMenu from '../BasicMenu';
 
 const Search = styled('div')(({ theme }) => ({
 position: 'relative',
@@ -32,7 +27,7 @@ marginLeft: 0,
 width: '100%',
 [theme.breakpoints.up('sm')]: {
 marginLeft: theme.spacing(3),
-width: 'auto',
+width: '100%',
 },
 }));
 
@@ -55,7 +50,7 @@ paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 transition: theme.transitions.create('width'),
 width: '100%',
 [theme.breakpoints.up('md')]: {
-    width: '20ch',
+    width:'100%',
 },
 },
 }));
@@ -68,19 +63,13 @@ const [searchValue,setSearchValue]=React.useState('');
 const isMenuOpen = Boolean(anchorEl);
 const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+// --------------------------useDefined State and Variable and Function 
+
 const {searchData}=useSelector(state=>state.movie);
 const dispatch=useDispatch();
 
+const genresArr=useSelector(state=>state.movie.genre);
 
-// const handleSearch=(e)=>{
-//     if(e.target.value.trim().length==0){
-//         dispatch(fetchMovie())
-//     }else{
-//         dispatch(fetchMovieByName(e.target.value));
-//     }
-    
-//     console.log(searchData);
-// }
 React.useEffect(()=>{
     const timer=setTimeout(()=>{
         if(searchValue.trim().length===0){
@@ -92,6 +81,18 @@ React.useEffect(()=>{
     },500)
     return ()=>clearTimeout(timer);
 },[searchValue])
+
+useEffect(()=>{
+    dispatch(fetchGenres());
+},[])
+
+
+// --------------------------useDefined State and Variable and Function
+
+
+
+
+
 
 const handleSearch=(e)=>{
     setSearchValue(e.target.value);
@@ -191,7 +192,7 @@ const renderMobileMenu = (
 return (
 <Box sx={{ flexGrow: 1 }}>
     <AppBar position="static">
-    <Toolbar>
+    <Toolbar sx={{display:'flex' ,justifyContent:'space-between',alignContent:'center'}} >
         {/* <IconButton
         size="large"
         edge="start"
@@ -209,17 +210,27 @@ return (
         >
         Movie App
         </Typography>
-        <Search onChange={handleSearch}>
-        <SearchIconWrapper>
-            <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-        />
-        </Search>
-        <Box sx={{ flexGrow: 1 }} />
+
+        <Box sx={{flexGrow:1,display:'flex',justifyContent:'center'}}>
+            <Search onChange={handleSearch}>
+                <SearchIconWrapper>
+                    <SearchIcon />
+                </SearchIconWrapper>
+            <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                 
+            />
+            </Search>
+        </Box>
+        
+        <Box >
+            <GenreMenu />
+
+        </Box>
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            
+        </Box>
         
         {/* <IconButton
             size="large"
@@ -232,7 +243,7 @@ return (
         >
             <AccountCircle />
         </IconButton> */}
-        </Box>
+        
         {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
         <IconButton
             size="large"
